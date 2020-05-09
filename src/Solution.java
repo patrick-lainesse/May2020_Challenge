@@ -4,6 +4,27 @@ import java.util.HashMap;
 
 class Solution {
 
+    /* May 9th: Valid Perfect Square
+    Given a positive integer num, write a function which returns True if num is a perfect square else False.
+    Note: Do not use any built-in library function such as sqrt. */
+    public static boolean isPerfectSquare(int num) {
+
+        // We'll use binary search to find the number is a perfect square
+        int left = 1;
+        int right = num-1;
+
+        if(num == 1) return true;
+        while(left<= right) {
+            int middle = (left + right) / 2;
+            if(middle*middle < num) {
+                left = middle + 1;
+            } else if(middle*middle > num) {
+                right = middle - 1;
+            } else return true;
+        }
+        return false;
+    }
+
     /* May 8th: Check If It Is a Straight Line
     You are given an array coordinates, coordinates[i] = [x, y], where [x, y] represents the coordinate of a point.
     Check if these points make a straight line in the XY plane. */
@@ -67,7 +88,7 @@ class Solution {
         System.out.println(majorityElement(nums2)); */
 
         // May 8th: Check If It Is a Straight Line
-        int[][] coordinates1 = {{1,1},{2,2},{3,4},{4,5},{5,6},{7,7}};
+        /*int[][] coordinates1 = {{1,1},{2,2},{3,4},{4,5},{5,6},{7,7}};
         int[][] coordinates2 = {{1,2},{2,3},{3,4},{4,5},{5,6},{6,7}};
         int[][] coordinates3 = {{1,2},{1,3},{3,4},{4,5},{5,6},{6,7}};
         int[][] coordinates4 = {{-4,-3},{1,0},{3,-1},{0,-1},{-5,2}};
@@ -75,7 +96,12 @@ class Solution {
         System.out.println(checkStraightLine(coordinates1));
         System.out.println(checkStraightLine(coordinates2));
         System.out.println(checkStraightLine(coordinates3));
-        System.out.println(checkStraightLine(coordinates4));
+        System.out.println(checkStraightLine(coordinates4));*/
 
+        // May 9th: Valid Perfect Square
+        System.out.println(isPerfectSquare(16));
+        System.out.println(isPerfectSquare(14));
+        System.out.println(isPerfectSquare(14183571));
+        System.out.println(isPerfectSquare(2147483647));
     }
 }
