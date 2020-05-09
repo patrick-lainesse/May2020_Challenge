@@ -15,11 +15,11 @@ class Solution {
 
         if(num == 1) return true;
         while(left<= right) {
-            int middle = (left + right) / 2;
+            long middle = (left + right) / 2;
             if(middle*middle < num) {
-                left = middle + 1;
+                left = (int) (middle + 1);
             } else if(middle*middle > num) {
-                right = middle - 1;
+                right = (int) (middle - 1);
             } else return true;
         }
         return false;
