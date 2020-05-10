@@ -4,6 +4,53 @@ import java.util.HashMap;
 
 class Solution {
 
+    /* May 10th (Happy Mothers' Day!): Find the Town Judge
+    In a town, there are N people labelled from 1 to N.  There is a rumor that one of these people is secretly the town judge.
+
+    If the town judge exists, then:
+    The town judge trusts nobody.
+    Everybody (except for the town judge) trusts the town judge.
+    There is exactly one person that satisfies properties 1 and 2.
+
+    You are given trust, an array of pairs trust[i] = [a, b] representing that the person labelled a trusts the person labelled b.
+    If the town judge exists and can be identified, return the label of the town judge.  Otherwise, return -1.
+
+    Notes:
+    1 <= N <= 1000
+    trust.length <= 10000
+    trust[i] are all different
+    trust[i][0] != trust[i][1]
+    1 <= trust[i][0], trust[i][1] <= N
+     */
+    public static int findJudge(int N, int[][] trust) {
+
+        HashMap<Integer, String> map = new HashMap<>();
+        for(int i = 1; i<= N; i++) {
+            map.put(i, null);
+        }
+
+        for(int[] truster : trust) {
+            String trusted = map.get(truster[0]);
+            if(trusted != null) {
+                trusted += truster[1];
+            } else {
+                trusted = String.valueOf(truster[1]);
+            }
+            //System.out.println("Trusted : " + trusted);
+            map.put(truster[0], trusted);
+        }
+        System.out.println("map: " + map);
+
+        for(int i = 1; i<=N; i++) {
+            if(map.get(i) == null) {
+                return i;
+            }
+        }
+        // case where not everyone trusts the same person left to treat (case 4)
+
+        return -1;
+    }
+
     /* May 9th: Valid Perfect Square
     Given a positive integer num, write a function which returns True if num is a perfect square else False.
     Note: Do not use any built-in library function such as sqrt. */
@@ -99,9 +146,21 @@ class Solution {
         System.out.println(checkStraightLine(coordinates4));*/
 
         // May 9th: Valid Perfect Square
-        System.out.println(isPerfectSquare(16));
+        /*System.out.println(isPerfectSquare(16));
         System.out.println(isPerfectSquare(14));
         System.out.println(isPerfectSquare(14183571));
-        System.out.println(isPerfectSquare(2147483647));
+        System.out.println(isPerfectSquare(2147483647));*/
+
+        // May 10th (Happy Mothers' Day!): Find the Town Judge
+        int[][] trust1 = {{1,2}};
+        int[][] trust2 = {{1,3},{2,3}};
+        int[][] trust3 = {{1,3},{2,3},{3,1}};
+        int[][] trust4 = {{1,2},{2,3}};
+        int[][] trust5 = {{1,3},{1,4},{2,3},{2,4},{4,3}};
+        System.out.println(findJudge(2, trust1));
+        System.out.println(findJudge(3, trust2));
+        System.out.println(findJudge(3, trust3));
+        System.out.println(findJudge(3, trust4));
+        System.out.println(findJudge(4, trust5));
     }
 }
