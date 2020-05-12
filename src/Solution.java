@@ -4,6 +4,33 @@ import java.util.HashMap;
 
 class Solution {
 
+    /* May 12th: Single Element in a Sorted Array
+
+    You are given a sorted array consisting of only integers where every element appears exactly twice,
+    except for one element which appears exactly once. Find this single element that appears only once.*/
+    public static int singleNonDuplicate(int[] nums) {
+
+        int left = 0;
+        int right = nums.length - 1;
+
+        if(nums.length == 0) return -1;
+        if(right == 0) return nums[0];
+        if(nums[0] != nums[1]) return nums[0];
+        if(nums[nums.length - 1] != nums[nums.length - 2]) return nums[nums.length - 1];
+
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if(nums[middle] == nums[middle - 1]) {
+                if ((middle - 2 - left) % 2 == 0) right = middle - 2;
+                else left = middle + 1;
+            } else if (nums[middle] == nums[middle + 1]) {
+                if ((middle - 1 - left) % 2 == 0) right = middle - 1;
+                else left = middle + 2;
+            } else return nums[middle];
+        }
+        return -1;
+    }
+
     /* May 10th (Happy Mothers' Day!): Find the Town Judge
     In a town, there are N people labelled from 1 to N.  There is a rumor that one of these people is secretly the town judge.
 
@@ -24,31 +51,38 @@ class Solution {
      */
     public static int findJudge(int N, int[][] trust) {
 
+        String judge = "-1";
         HashMap<Integer, String> map = new HashMap<>();
+
         for(int i = 1; i<= N; i++) {
-            map.put(i, null);
+            map.put(i, "");
         }
 
         for(int[] truster : trust) {
             String trusted = map.get(truster[0]);
-            if(trusted != null) {
-                trusted += truster[1];
-            } else {
-                trusted = String.valueOf(truster[1]);
-            }
-            //System.out.println("Trusted : " + trusted);
+            trusted += truster[1];
             map.put(truster[0], trusted);
         }
-        System.out.println("map: " + map);
 
         for(int i = 1; i<=N; i++) {
-            if(map.get(i) == null) {
-                return i;
+            if(map.get(i).equals("")) {
+                // if there was already a person trusting no one, return -1 since there can't be two judges
+                if(!judge.equals("-1")) return -1;
+                judge = String.valueOf(i);
             }
         }
-        // case where not everyone trusts the same person left to treat (case 4)
 
-        return -1;
+        // if the judge hasn't been found or if the judge trusts someone
+        if(judge.equals("-1")) return -1;
+        if(!map.get(Integer.parseInt(judge)).equals("")) return -1;
+
+        for(int i = 1; i<=N; i++) {
+            if(!String.valueOf(i).equals(judge) && !map.get(i).contains(judge)) {
+                return -1;
+            }
+        }
+
+        return Integer.parseInt(judge);
     }
 
     /* May 9th: Valid Perfect Square
@@ -152,7 +186,7 @@ class Solution {
         System.out.println(isPerfectSquare(2147483647));*/
 
         // May 10th (Happy Mothers' Day!): Find the Town Judge
-        int[][] trust1 = {{1,2}};
+        /*int[][] trust1 = {{1,2}};
         int[][] trust2 = {{1,3},{2,3}};
         int[][] trust3 = {{1,3},{2,3},{3,1}};
         int[][] trust4 = {{1,2},{2,3}};
@@ -161,6 +195,21 @@ class Solution {
         System.out.println(findJudge(3, trust2));
         System.out.println(findJudge(3, trust3));
         System.out.println(findJudge(3, trust4));
-        System.out.println(findJudge(4, trust5));
+        System.out.println(findJudge(4, trust5));*/
+
+        // May 12th: Single Element in a Sorted Array
+        int[] single1 = {1,1,2,3,3,4,4,8,8};    // expected: 2
+        int[] single2 = {3,3,7,7,10,11,11};     // expected: 10
+        int[] single3 = {3,3,7,7,10,10,11,11,12};     // expected: 12
+        int[] single4 = {0,3,3,7,7,10,10,11,11,12,12};     // expected: 0
+        int[] single5 = {1};
+        int[] single6 = {};
+
+        System.out.println("answer: " + singleNonDuplicate(single1));
+        System.out.println("answer: " + singleNonDuplicate(single2));
+        System.out.println("answer: " + singleNonDuplicate(single3));
+        System.out.println("answer: " + singleNonDuplicate(single4));
+        System.out.println("answer: " + singleNonDuplicate(single5));
+        System.out.println("answer: " + singleNonDuplicate(single6));
     }
 }
